@@ -18,11 +18,11 @@ RSpec.describe Parodikos::Signer do
   let(:method) { 'POST' }
   let(:url) { 'https://api.twitter.com/1.1/statuses/update.json' }
   let(:consumer_secret) { 'kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw' }
-  let(:oauth_token_secret) { 'LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE' }
+  let(:token_secret) { 'LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE' }
 
   let(:signer) do
     described_class.new(method, url, consumer_secret: consumer_secret,
-                        params: params, oauth_token_secret: oauth_token_secret)
+                        params: params, token_secret: token_secret)
   end
 
   describe '#signature' do
@@ -65,7 +65,7 @@ RSpec.describe Parodikos::Signer do
     end
 
     context 'when the token secret is not known' do
-      let(:oauth_token_secret) {}
+      let(:token_secret) {}
       let(:signing_key) do
         'kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&'
       end

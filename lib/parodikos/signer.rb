@@ -5,15 +5,15 @@ require 'openssl'
 
 module Parodikos
   class Signer
-    attr_reader :params, :method, :url, :consumer_secret, :oauth_token_secret
+    attr_reader :params, :method, :url, :consumer_secret, :token_secret
 
-    def initialize(method, url, consumer_secret:, params: nil, body: nil, oauth_token_secret: nil)
+    def initialize(method, url, consumer_secret:, params: nil, body: nil, token_secret: nil)
       @method = method
       @url = url
       @consumer_secret = consumer_secret
       @params = params
       @body = body
-      @oauth_token_secret = oauth_token_secret
+      @token_secret = token_secret
     end
 
     def signature
@@ -39,7 +39,7 @@ module Parodikos
     def signing_key
       str = ERB::Util.url_encode(consumer_secret)
       str << "&"
-      str << ERB::Util.url_encode(oauth_token_secret) if oauth_token_secret
+      str << ERB::Util.url_encode(token_secret) if token_secret
       str
     end
 
