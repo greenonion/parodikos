@@ -3,8 +3,6 @@ require 'base64'
 require 'erb'
 require 'openssl'
 
-require 'pry'
-
 module Parodikos
   class Signer
     attr_reader :params, :method, :url, :consumer_secret, :oauth_token_secret
