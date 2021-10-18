@@ -8,9 +8,9 @@ RSpec.describe Parodikos::Headers do
   let(:consumer_key) { 'xvz1evFS4wEEPTGEFPHBog' }
   let(:nonce) { 'kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg' }
   let(:signature) { 'tnnArxj06cWHq44gCs1OSKk/jLY=' }
-  let(:timestamp) { 1318622958 }
+  let(:timestamp) { '1318622958' }
   let(:token) { '370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb' }
-  let(:client) do
+  let(:headers) do
     described_class.new(method, url, consumer_key: consumer_key, token: token,
                         consumer_secret: consumer_secret, token_secret: token_secret,
                         params: {}, body: nil)
@@ -22,10 +22,18 @@ RSpec.describe Parodikos::Headers do
     end
 
     it 'builds the authorization header' do
-      allow(client).to receive(:nonce).and_return(nonce)
-      allow(client).to receive(:signature).and_return(signature)
-      allow(client).to receive(:timestamp).and_return(timestamp)
-      expect(client.authorization).to eq(authorization)
+      allow(headers).to receive(:nonce).and_return(nonce)
+      allow(headers).to receive(:signature).and_return(signature)
+      allow(headers).to receive(:timestamp).and_return(timestamp)
+      expect(headers.authorization).to eq(authorization)
+    end
+  end
+
+  describe '#signed_parameters' do
+    it 'has the authorization parameters plus signature' do
+      signed_parameters = headers.signed_parameters
+      signed_parameters.delete('oauth_signature')
+      expect(signed_parameters).to eq(headers.authorization_parameters)
     end
   end
 end
