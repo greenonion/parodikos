@@ -24,8 +24,11 @@ module Parodikos
       data
     end
 
-    def self.fetch(screen_name:, count:)
-      new(screen_name: screen_name, count: count).fetch
+    def self.fetch(screen_name:, count:, since_id: nil, max_id: nil)
+      new(screen_name: screen_name,
+          count: count,
+          since_id: since_id,
+          max_id: max_id).fetch
     end
 
     private
