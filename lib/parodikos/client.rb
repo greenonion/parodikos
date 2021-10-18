@@ -3,7 +3,6 @@
 require 'faraday'
 require 'yaml'
 
-# GET https://api.twitter.com/1.1/favorites/list.json?count=200&screen_name=twitterdev
 module Parodikos
   class Client
     attr_reader :method, :url, :credentials, :params
