@@ -1,6 +1,19 @@
 AllCops:
   TargetRubyVersion: 2.7
 
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - spec/**/*.rb
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
+
+Style/Documentation:
+  Exclude:
+    - spec/**/*.rb
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: single_quotes
@@ -9,5 +22,3 @@ Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: single_quotes
 
-Layout/LineLength:
-  Max: 120
