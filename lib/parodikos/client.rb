@@ -5,14 +5,15 @@ require 'yaml'
 
 module Parodikos
   class Client
-    attr_reader :method, :url, :credentials, :params
+    attr_reader :method, :url, :credentials, :params, :client
 
-    def initialize(method, url, params: {}, body: {})
+    def initialize(method, url, params: {}, body: {}, client: Faraday)
       @method = method
       @url = url
       @params = params
       @body = body
       @credentials = credentials!
+      @client = client
     end
 
     def perform
@@ -24,6 +25,10 @@ module Parodikos
       end
     end
 
+    def self.perform!(method, url, params: {}, body: {})
+      new(method, url, params: params, body: body).perform
+    end
+
     private
 
     def headers
@@ -32,7 +37,7 @@ module Parodikos
                   consumer_secret: credentials['api-secret-key'],
                   token: credentials['access-token'],
                   token_secret: credentials['access-token-secret'],
-                  params: params )
+                  params: params)
     end
 
     def credentials!
@@ -40,7 +45,7 @@ module Parodikos
     end
 
     def perform_get
-      Faraday.get(url) do |req|
+      client.get(url) do |req|
         req.params = params
         req.headers['Authorization'] = headers.authorization
         req.headers['Accept'] = '*/*'
@@ -48,7 +53,7 @@ module Parodikos
     end
 
     def perform_post
-      Faraday.post(url) do |req|
+      client.post(url) do |req|
         req.params = params
         req.headers['Authorization'] = headers.authorization
         req.headers['Accept'] = '*/*'
