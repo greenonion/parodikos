@@ -4,6 +4,7 @@ require 'erb'
 require 'openssl'
 
 module Parodikos
+  # Responsible for signing requests to the Twitter API
   class Signer
     attr_reader :params, :method, :url, :consumer_secret, :token_secret
 
@@ -38,7 +39,7 @@ module Parodikos
 
     def signing_key
       str = ERB::Util.url_encode(consumer_secret)
-      str << "&"
+      str << '&'
       str << ERB::Util.url_encode(token_secret) if token_secret
       str
     end
@@ -49,7 +50,7 @@ module Parodikos
     # @param enum [Array] the form to encode
     # @return [String] the encoded form
     def percent_encode_form(enum)
-      enum.map do |k,v|
+      enum.map do |k, v|
         if v.nil?
           ERB::Util.url_encode(k)
         elsif v.respond_to?(:to_ary)

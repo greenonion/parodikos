@@ -4,6 +4,7 @@ require 'faraday'
 require 'yaml'
 
 module Parodikos
+  # Client class for the Twitter API
   class Client
     attr_reader :method, :url, :credentials, :params, :client
 

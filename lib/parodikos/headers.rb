@@ -5,6 +5,8 @@ require 'openssl'
 require 'securerandom'
 
 module Parodikos
+  # Class responsible for creating the headers needed for interaction with the
+  # Twitter API
   class Headers
     attr_reader :method, :url, :consumer_key, :token, :consumer_secret, :token_secret,
                 :params, :body
@@ -56,7 +58,7 @@ module Parodikos
     end
 
     def nonce
-      OpenSSL::Random.random_bytes(16).unpack('H*')[0]
+      OpenSSL::Random.random_bytes(16).unpack1('H*')
     end
 
     def signature_method
