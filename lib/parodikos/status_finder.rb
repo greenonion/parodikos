@@ -12,6 +12,29 @@ module Parodikos
       @statuses = statuses
     end
 
+    def self.max_before(screen_name:, date:)
+      new(screen_name: screen_name).max_before(date)
+    end
+
+    # Returns the number of tweets before a certain date
+    def number_of_tweets_before(date)
+      # Twitter API bases everything around ids, so we first need to find our
+      # id and then travel backwards in time.
+      max_id = max_before(date)
+
+      # Let's not really do an infinite loop here, 20k tweets should cover it
+      total = 1
+      100.times do
+        tweets = sorted_tweets_before(max_id)
+        break if tweets.size == 1
+
+        total += tweets.size - 1 # max id is overlapping
+        max_id = tweets.first['id']
+      end
+
+      total
+    end
+
     # Finds the maximum tweet id that should be deleted.
     # Three options:
     # - We have tweets both before and after the requested date, which means

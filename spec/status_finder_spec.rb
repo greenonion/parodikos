@@ -77,4 +77,13 @@ RSpec.describe Parodikos::StatusFinder do
       end
     end
   end
+
+  describe '#number_of_tweets_before' do
+    it 'returns the number of tweets before the 5th of April' do
+      allow(status_finder).to receive(:sorted_tweets_before).with(nil).and_return(tweets)
+      allow(status_finder).to receive(:sorted_tweets_before).with(850_007_368_138_018_817).and_return([tweets[0]] + older_tweets)
+      allow(status_finder).to receive(:sorted_tweets_before).with(850_007_368_138_018_814).and_return([older_tweets[0]])
+      expect(status_finder.number_of_tweets_before(Date.new(2017, 4, 5))).to eq(1)
+    end
+  end
 end
