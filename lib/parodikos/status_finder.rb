@@ -35,6 +35,10 @@ module Parodikos
       total
     end
 
+    def self.number_of_tweets_before(screen_name:, date:)
+      new(screen_name: screen_name).number_of_tweets_before(date)
+    end
+
     # Finds the maximum tweet id that should be deleted.
     # Three options:
     # - We have tweets both before and after the requested date, which means
