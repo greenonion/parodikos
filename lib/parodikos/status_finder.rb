@@ -5,11 +5,10 @@ module Parodikos
   class StatusFinder
     MAX_COUNT = 200
 
-    attr_reader :statuses, :screen_name
+    attr_reader :screen_name
 
-    def initialize(screen_name:, statuses: Statuses)
+    def initialize(screen_name:)
       @screen_name = screen_name
-      @statuses = statuses
     end
 
     def self.max_before(screen_name:, date:)
@@ -65,7 +64,7 @@ module Parodikos
     private
 
     def sorted_tweets_before(max_id)
-      statuses.fetch(screen_name: screen_name, count: MAX_COUNT, max_id: max_id)
+      Statuses.fetch(screen_name: screen_name, count: MAX_COUNT, max_id: max_id)
               .sort_by { |status| DateTime.parse(status['created_at']) }
     end
 
