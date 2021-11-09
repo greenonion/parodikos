@@ -4,12 +4,11 @@ module Parodikos
   # Deletes all tweets before a certain date for a certain user.
   # Allows for dry runs.
   class Reaper
-    attr_reader :screen_name, :before, :status_finder
+    attr_reader :screen_name, :before
 
-    def initialize(screen_name:, before:, status_finder: StatusFinder)
+    def initialize(screen_name:, before:)
       @screen_name = screen_name
       @before = before
-      @status_finder = status_finder
     end
 
     def dry!
