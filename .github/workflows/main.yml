@@ -1,4 +1,4 @@
-name: Ruby
+name: Parodikos CI
 
 on:
   push:
@@ -13,15 +13,17 @@ jobs:
 
     strategy:
       matrix:
-        ruby:
+        ruby-version:
           - 2.7.4
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Ruby
+    - name: Set up Ruby ${{ matrix.ruby-version }}
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ matrix.ruby }}
+        ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
-    - name: Run the default task
+    - name: Install dependencies
+      run: bundle install
+    - name: Run tests
       run: bundle exec rspec
