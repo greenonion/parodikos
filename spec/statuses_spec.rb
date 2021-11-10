@@ -1,20 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Parodikos::Statuses do
-  let(:client) { double }
-
   describe '#data' do
-    let(:statuses) do
-      described_class.new(screen_name: 'nikosfertakis',
-                          count: 100,
-                          client: client)
-    end
+    let(:statuses) { described_class.new(screen_name: 'nikosfertakis', count: 10) }
 
     context 'when the request was unsuccessful' do
       let(:response) { double('response', status: 404) }
 
       it 'returns an empty string' do
-        allow(client).to receive(:perform!).and_return(response)
+        allow(statuses).to receive(:response).and_return(response)
 
         expect(statuses.data).to eq('')
       end
@@ -54,7 +48,7 @@ RSpec.describe Parodikos::Statuses do
       end
 
       it 'parses the response body' do
-        allow(client).to receive(:perform!).and_return(response)
+        allow(statuses).to receive(:response).and_return(response)
 
         expect(statuses.data).to eq(parsed_body)
       end

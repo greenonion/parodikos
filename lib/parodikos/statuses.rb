@@ -5,16 +5,15 @@ require 'json'
 module Parodikos
   # Resposible for interacting with the GET statues endpoint
   class Statuses
-    attr_reader :method, :url, :client, :screen_name, :count, :since_id, :max_id
+    attr_reader :method, :url, :screen_name, :count, :since_id, :max_id
 
-    def initialize(screen_name:, count:, since_id: nil, max_id: nil, client: Client)
+    def initialize(screen_name:, count:, since_id: nil, max_id: nil)
       @screen_name = screen_name
       @count = count
       @since_id = since_id
       @max_id = max_id
       @method = 'get'
       @url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
-      @client = client
     end
 
     def fetch
@@ -35,7 +34,7 @@ module Parodikos
     private
 
     def response
-      @response ||= client.perform!(method, url, params: params)
+      @response ||= Client.perform!(method, url, params: params)
     end
 
     def ok?
