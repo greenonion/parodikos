@@ -6,15 +6,14 @@ require 'yaml'
 module Parodikos
   # Client class for the Twitter API
   class Client
-    attr_reader :method, :url, :credentials, :params, :client
+    attr_reader :method, :url, :credentials, :params
 
-    def initialize(method, url, params: {}, body: {}, client: Faraday)
+    def initialize(method, url, params: {}, body: {})
       @method = method
       @url = url
       @params = params
       @body = body
       @credentials = credentials!
-      @client = client
     end
 
     def perform
@@ -46,7 +45,7 @@ module Parodikos
     end
 
     def perform_get
-      client.get(url) do |req|
+      Faraday.get(url) do |req|
         req.params = params
         req.headers['Authorization'] = headers.authorization
         req.headers['Accept'] = '*/*'
@@ -54,7 +53,7 @@ module Parodikos
     end
 
     def perform_post
-      client.post(url) do |req|
+      Faraday.post(url) do |req|
         req.params = params
         req.headers['Authorization'] = headers.authorization
         req.headers['Accept'] = '*/*'
