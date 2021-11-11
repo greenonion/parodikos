@@ -1,38 +1,36 @@
 # Parodikos
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/parodikos`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ever wanted to get rid of your old tweets? Well now you can! Parodikos will
+accept your Twitter handle and a date as inputs and will delete all of your
+tweets before that date.
 
-TODO: Delete this and the text above, and describe your gem
+The only thing required is to set up a `credentials.yml` file (details below).
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'parodikos'
-```
-
-And then execute:
+For now this is pretty barebones. The first step is to clone this repo and run:
 
     $ bundle install
 
-Or install it yourself as:
+Then create your own `credentials.yml` file:
 
-    $ gem install parodikos
+    $ cp credentials.yml.sampl credentials.yml
+
+You will have to go to [Twitter](https://developer.twitter.com/content/developer-twitter/en/portal/projects-and-apps) and obtain these for yourself.
 
 ## Usage
 
-TODO: Write usage instructions here
+To perform a dry run:
 
-## Development
+    $ exe/parodikos reap --screen_name=nikosfertakis --before=2013-09-01 --dry=true
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+To actually delete tweets
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+    $ exe/parodikos reap --screen_name=nikosfertakis --before=2013-09-01 --dry=false
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/parodikos.
+Bug reports and pull requests are welcome on GitHub at https://github.com/greenonion/parodikos.
 
 ## License
 
