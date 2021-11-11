@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 require 'faraday'
-require 'yaml'
 
 module Parodikos
   # Client class for the Twitter API
   class Client
-    attr_reader :method, :url, :credentials, :params
+    attr_reader :method, :url, :params
 
     def initialize(method, url, params: {}, body: {})
       @method = method
       @url = url
       @params = params
       @body = body
-      @credentials = credentials!
     end
 
     def perform
@@ -32,16 +30,11 @@ module Parodikos
     private
 
     def headers
-      Headers.new(@method, @url,
-                  consumer_key: credentials['api-key'],
-                  consumer_secret: credentials['api-secret-key'],
-                  token: credentials['access-token'],
-                  token_secret: credentials['access-token-secret'],
-                  params: params)
+      Headers.new(@method, @url, credentials: credentials, params: params)
     end
 
-    def credentials!
-      YAML.safe_load(File.read('credentials.yml'))
+    def credentials
+      @credentials ||= Credentials.from_file!(filename: 'credentials.yml')
     end
 
     def perform_get

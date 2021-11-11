@@ -9,15 +9,12 @@ module Parodikos
   # Twitter API
   class Headers
     attr_reader :method, :url, :consumer_key, :token, :consumer_secret, :token_secret,
-                :params, :body
+                :params, :body, :credentials
 
-    def initialize(method, url, consumer_key:, token:, consumer_secret:, token_secret: nil, params: nil, body: nil)
+    def initialize(method, url, credentials:, params: nil, body: nil)
       @method = method
       @url = url
-      @consumer_key = consumer_key
-      @token = token
-      @consumer_secret = consumer_secret
-      @token_secret = token_secret
+      @credentials = credentials
       @params = params
       @body = body
     end
@@ -38,11 +35,11 @@ module Parodikos
     def authorization_parameters
       # Only calculate these once to ensure nonce and timestamp don't change
       @authorization_parameters ||= {
-        'oauth_consumer_key' => consumer_key,
+        'oauth_consumer_key' => credentials.api_key,
         'oauth_nonce' => nonce,
         'oauth_signature_method' => signature_method,
         'oauth_timestamp' => timestamp,
-        'oauth_token' => token,
+        'oauth_token' => credentials.access_token,
         'oauth_version' => version
       }
     end
@@ -53,8 +50,8 @@ module Parodikos
 
     def signature
       sig_params = params.merge(authorization_parameters)
-      Signer.new(method, url, consumer_secret: consumer_secret, params: sig_params,
-                 body: body, token_secret: token_secret).signature
+      Signer.new(method, url, consumer_secret: credentials.api_secret_key, params: sig_params,
+                              body: body, token_secret: credentials.access_token_secret).signature
     end
 
     def nonce
