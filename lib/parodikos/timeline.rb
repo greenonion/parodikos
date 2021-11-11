@@ -34,6 +34,10 @@ module Parodikos
       new(screen_name: screen_name).number_of_tweets_before(date)
     end
 
+    def self.each_tweet_before(screen_name:, date:, &block)
+      new(screen_name: screen_name).each_tweet_before(date, &block)
+    end
+
     def number_of_tweets_before(date)
       count { |tweet| DateTime.parse(tweet['created_at']) < date }
     end
