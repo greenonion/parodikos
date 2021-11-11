@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'faraday', '~> 1.8.0'
+  spec.add_dependency 'thor', '~> 1.1.0'
 end

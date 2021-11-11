@@ -1,4 +1,34 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'bundler/setup'
+require 'thor'
 require 'parodikos'
+
+# Command line helper
+class ParodikosCommand < Thor
+  def self.exit_on_failure?
+    true
+  end
+
+  desc 'reap', 'Deletes Tweets older than the date specified'
+  method_option :screen_name, desc: 'Target Twitter handle', required: true
+  method_option :before, desc: 'Date in YYYY-MM-DD format', required: true
+  method_option :dry, desc: 'Perform a dry run and return the number of tweets to be deleted',
+                      required: false, default: true, type: :boolean
+  def reap
+    screen_name = options[:screen_name]
+    before = Date.parse(options[:before])
+    dry = options[:dry]
+
+    total = Parodikos::Reaper.reap!(screen_name: screen_name, before: before, dry: true)
+
+    if dry
+      puts "Would delete #{total} tweets"
+    else
+      puts "Deleted #{total} tweets"
+    end
+  end
+end
+
+ParodikosCommand.start
