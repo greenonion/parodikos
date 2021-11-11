@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Parodikos::Signer do
-
   let(:params) do
     {
       'status' => 'Hello Ladies + Gentlemen, a signed OAuth request!',
@@ -22,7 +21,7 @@ RSpec.describe Parodikos::Signer do
 
   let(:signer) do
     described_class.new(method, url, consumer_secret: consumer_secret,
-                        params: params, token_secret: token_secret)
+                                     params: params, token_secret: token_secret)
   end
 
   describe '#signature' do
@@ -65,7 +64,7 @@ RSpec.describe Parodikos::Signer do
     end
 
     context 'when the token secret is not known' do
-      let(:token_secret) {}
+      let(:token_secret) { nil }
       let(:signing_key) do
         'kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&'
       end
