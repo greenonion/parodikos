@@ -12,26 +12,29 @@ module Parodikos
     end
 
     def dry!
-      StatusFinder.number_of_tweets_before(screen_name: screen_name, date: before)
+      Timeline.number_of_tweets_before(screen_name: screen_name, date: before)
     end
 
-    def self.dry_run(screen_name:, before:)
-      new(screen_name: screen_name, before: before).dry!
+    def reap!(dry: true)
+      return dry! if dry
+
+      total = 0
+
+      Timeline.each_tweet_before(screen_name: screen_name, date: before) do |tweet|
+        destroy!(tweet['id'])
+        total += 1
+      end
+      total
     end
 
     def self.reap!(screen_name:, before:, dry: true)
-      if dry
-        dry_run(screen_name: screen_name, before: before)
-      else
-        false
-      end
+      new(screen_name: screen_name, before: before).reap!(dry: dry)
     end
 
     private
 
-    # The maximum id that should be deleted
-    def max_id
-      @max_id ||= StatusFinder.max_before(screen_name: screen_name, date: before)
+    def destroy!(tweet_id)
+      Destroyer.destroy!(tweet_id: tweet_id)
     end
   end
 end
